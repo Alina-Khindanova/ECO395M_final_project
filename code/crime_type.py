@@ -5,42 +5,35 @@ from database import engine
 
 create_crime_type_table = """
     CREATE TABLE IF NOT EXISTS crime_type (
-        id Highest Offense Code,
-        "Highest Offense Description" VARCHAR,
-        "crime_type" VARCHAR
+        "Highest.Offense.Code" SERIAL PRIMARY KEY,
+        "Highest.Offense.Description" VARCHAR,
+        "crime.type" VARCHAR
     );
 """
 
+query_offense_data = """
+SELECT 
+    "Highest.Offense.Code",
+    "Highest.Offense.Description",
+    "Ocurred.Date"
+FROM
+    crime_reports
+WHERE
+    "Ocurred.Date" BETWEEN '2011-01-01' AND '2022-12-31';
+"""
 engine.connect().exec_driver_sql(create_crime_type_table)
 
-df_crime_type.to_sql("crime_type", engine, if_exists="append", index= False)
+df_crime_type = pd.read_sql_query(query_offense_data, engine)
 
-
-IN_PATH = os.path.join(
-    "data", "Crime_Reports.csv"
-)
-OUTPUT_DIR = "artifacts"
-OUTPUT_PATH = os.path.join(OUTPUT_DIR, "Crime_Type.csv")
+# print(df_crime_type.shape) # total 1293921 data
 
 
 if __name__ == "__main__":
-    # select years: 2011-2022
-    df = pd.read_csv(IN_PATH)
-    df["Occurred Date"] = pd.to_datetime(df["Occurred Date"])
-    df_year = df[
-        (df["Occurred Date"] >= "2011-01-01") & (df["Occurred Date"] <= "2022-12-31")
-    ]
-
-    df_year = df_year[["Highest Offense Description", "Highest Offense Code"]]
-
-    # Count and print the number of rows in the filtered DataFrame
-    num_rows = len(df_year)
-    print(f"Number of rows in the filtered data: {num_rows}")
-    # 1293921
-
     # number of Highest Offense Description: 399
-    total_distinct_count = df_year[['Highest Offense Description']].nunique().sum()
-    print(total_distinct_count)
+    total_distinct_count = (
+        df_crime_type[["Highest.Offense.Description"]].nunique().sum()
+    )
+    # print(total_distinct_count)
 
 # mapping
 violent_keywords = [
@@ -58,9 +51,25 @@ violent_keywords = [
     "ASSAULT/FAMILY VIOLENCE",
     "ASSAULT BY THREAT",
     "SEXUAL",
+    "SEX",
     "ARSON",
     "CRIMINAL MISCHIEF",
     "FELONY ENHANCEMENT/ASSLT W/INJ",
+    "PERJURY",
+    "SODOMY",
+    "STRANGL",
+    "INJURY",
+    "PROSTITUTION",
+    "INDECENCY WITH A CHILD/CONTACT",
+    "INDECENT EXPOSURE",
+    "ENTICING A CHILD",
+    "CONT SEX ABUSE OF CHILD",
+    "SEXTING DEPICTING A MINOR",
+    "INDECENCY WITH CHILD/EXPOSURE",
+    "CHILD ENDANGERMENT-ABANDONMENT",
+    "VIOL",
+    "RESTRAINT"
+    "HINDER"
 ]
 property_keywords = [
     "BURGLARY",
@@ -71,6 +80,10 @@ property_keywords = [
     "THREAT",
     "DOC EXPOSURE",
     "GRAFFITI",
+    "BURG OF RES - FAM/DATING ASLT",
+    "DAMAGE",
+    "PURSE SNATCHING",
+    "MISAPPLY FIDUCIARY PROP",
 ]
 white_collar_keywords = [
     "FRAUD",
@@ -84,18 +97,32 @@ white_collar_keywords = [
     "CREDIT CARD ABUSE - OTHER",
     "FORGERY - OTHER",
     "VIOLATION OF BOND CONDITIONS",
+    "FORGERY OF IDENTIFICATION",
+    "COUNTERFEITING",
+    "FICTITIOUS",
+    "FORGERY",
+    "BANK KITING",
+    "RENTAL CAR/FAIL TO RETURN",
+    "RENTAL CAR/FAIL TO RETURN",
+    "BRIBERY",
 ]
 drug_keywords = [
-    "POSS/PROMO CHILD PORNOGRAPHY",
-    "POSS OF DRUG PARAPHERNALIA",
+    "CHILD PORNOGRAPHY",
+    "DRUG"
     "MARIJUANA",
-    "POSS OF PROHIBITED WEAPON",
-    "POSS OF GAMBLING PARAPHERNALIA",
-    "POSS CONTROLLED SUB/NARCOTIC",
+    "WEAPON",
+    "GAMBLING PARAPHERNALIA",
+    "CONTROLLED",
+    "ALCOHOL",
+    "DWI",
+    "DANG DRUG",
+    "DXM",
+    "LIQUOR",
+    "LIQ",
 ]
 cyber_keywords = [
     "ONLINE IMPERSONATION",
-    "HARASSMENT ONLINE",
+    "HARASSMENT",
     "BREACH OF COMPUTER SECURITY",
     "SOLICITATION",
     "CONSUMER PROD",
@@ -103,6 +130,14 @@ cyber_keywords = [
     "GOV RECORD",
     "UNLAWFUL INTERCEPTION",
     "SEXTING/TRANSMIT SEXUAL PHOTOS",
+    "COMMUNICATING",
+    "FALSE",
+    "TELECOMMUNICATION",
+    "DISCLOSE/PROMO INTIMATE VISUA",
+    "POSSESSION OF FORGED WRITING",
+    "CRIMINAL CONSPIRACY",
+    "MISUSE OF OFFICIAL INFO",
+    "COMMERCIAL BRIBERY",
 ]
 
 
@@ -121,25 +156,35 @@ def categorize_crime(crime_type):
         return "Other"
 
 
-df_year["crime_type"] = df_year["Highest Offense Description"].apply(categorize_crime)
+df_crime_type["crime.type"] = df_crime_type["Highest.Offense.Description"].apply(
+    categorize_crime
+)
 
 # distinct highest offense description
-df_year_distinct = df_year.drop_duplicates(subset="Highest Offense Description")
-df_year_distinct_order = ['Highest Offense Code', 'Highest Offense Description', 'crime_type']
-df_year_distinct = df_year_distinct[df_year_distinct_order]
+df_crime_type_distinct = df_crime_type.drop_duplicates(
+    subset="Highest.Offense.Code"
+) ##362 distinct code
+df_crime_type_distinct_order = [
+    "Highest.Offense.Code",
+    "Highest.Offense.Description",
+    "crime.type",
+]
 
-df_year_distinct.to_csv(OUTPUT_PATH, index=False)
-
-print(f"Distinct DataFrame saved to: {OUTPUT_PATH}")
+df_crime_type_distinct = df_crime_type_distinct[df_crime_type_distinct_order]
 
 
-# crime_counts = df_year_distinct["crime_type"].value_counts()
+df_crime_type_distinct.to_sql("crime_type", engine, if_exists="append", index=False)
+
+# crime_counts = df_crime_type_distinct["crime.type"].value_counts()
 
 # # Display the counts
 # print(crime_counts)
 
-# other_crimes = df_year[df_year["crime_type"] == "Other"]["Highest Offense Description"]
+# other_crimes = df_crime_type[df_crime_type["crime.type"] == "Other"][
+#     "Highest.Offense.Description"
+# ]
 
+# print(other_crimes)
 # other_crimes_counts = other_crimes.value_counts()
 
 # # Get the top 15 most common "Other" crime types
