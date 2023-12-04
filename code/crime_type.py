@@ -5,8 +5,7 @@ from database import engine
 
 create_crime_type_table = """
     CREATE TABLE IF NOT EXISTS crime_type (
-        id SERIAL PRIMARY KEY,
-        "Highest Offense Code" Numeric,
+        id Highest Offense Code,
         "Highest Offense Description" VARCHAR,
         "crime_type" VARCHAR
     );
