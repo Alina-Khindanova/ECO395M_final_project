@@ -12,10 +12,11 @@ with engine.connect() as connection:
     connection.execute(create_extension)
 
 create_table_sql = text("""
-    CREATE TABLE demographic_data (
+    CREATE TABLE demographics (
         zipcode_year SERIAL PRIMARY KEY,
         median_household_income FLOAT,
-        bachelors_degree_or_higher FLOAT
+        percent_bachelors_higher FLOAT,
+        zip_code INTEGER
     )
 """)
 
