@@ -3,6 +3,9 @@ import pandas as pd
 
 from database import engine
 
+drop_table = """
+DROP TABLE IF EXISTS crime_type
+"""
 create_crime_type_table = """
     CREATE TABLE IF NOT EXISTS crime_type (
         "Highest.Offense.Code" SERIAL PRIMARY KEY,
@@ -21,6 +24,8 @@ FROM
 WHERE
     "Ocurred.Date" BETWEEN '2011-01-01' AND '2022-12-31';
 """
+
+engine.connect().exec_driver_sql(drop_table)
 engine.connect().exec_driver_sql(create_crime_type_table)
 
 df_crime_type = pd.read_sql_query(query_offense_data, engine)
@@ -52,10 +57,7 @@ violent_keywords = [
     "ASSAULT BY THREAT",
     "SEXUAL",
     "SEX",
-    "ARSON",
-    "CRIMINAL MISCHIEF",
     "FELONY ENHANCEMENT/ASSLT W/INJ",
-    "PERJURY",
     "SODOMY",
     "STRANGL",
     "INJURY",
@@ -64,26 +66,27 @@ violent_keywords = [
     "INDECENT EXPOSURE",
     "ENTICING A CHILD",
     "CONT SEX ABUSE OF CHILD",
-    "SEXTING DEPICTING A MINOR",
     "INDECENCY WITH CHILD/EXPOSURE",
     "CHILD ENDANGERMENT-ABANDONMENT",
     "VIOL",
-    "RESTRAINT"
-    "HINDER"
+    "RESTRAINT",
+    "HINDER",
+    "WEAPON",
+    "GAMBLING PARAPHERNALIA",
 ]
 property_keywords = [
     "BURGLARY",
     "THEFT",
     "CRIMINAL TRESPASS",
     "BURGLARY OF SHED/DETACHED GARAGE/STORAGE UNIT",
-    "HINDERING APPREHENSION",
-    "THREAT",
-    "DOC EXPOSURE",
     "GRAFFITI",
     "BURG OF RES - FAM/DATING ASLT",
     "DAMAGE",
     "PURSE SNATCHING",
-    "MISAPPLY FIDUCIARY PROP",
+    "ARSON",
+    "CRIMINAL MISCHIEF",
+    "RENTAL CAR/FAIL TO RETURN",
+    "TAMPERING WITH EVIDENCE",
 ]
 white_collar_keywords = [
     "FRAUD",
@@ -92,41 +95,32 @@ white_collar_keywords = [
     "MONEY LAUNDERING",
     "FORGERY AND PASSING",
     "FALSE STATEMENT -OBTAIN CREDIT",
-    "FALSE REPORT TO PEACE OFFICER",
-    "FALSE ALARM OR REPORT",
     "CREDIT CARD ABUSE - OTHER",
     "FORGERY - OTHER",
-    "VIOLATION OF BOND CONDITIONS",
     "FORGERY OF IDENTIFICATION",
     "COUNTERFEITING",
     "FICTITIOUS",
     "FORGERY",
     "BANK KITING",
-    "RENTAL CAR/FAIL TO RETURN",
-    "RENTAL CAR/FAIL TO RETURN",
     "BRIBERY",
+    "PERJURY",
+    "MISAPPLY FIDUCIARY PROP",
+    "MISUSE OF OFFICIAL INFO",
+    "POSSESSION OF FORGED WRITING",
+
 ]
 drug_keywords = [
-    "CHILD PORNOGRAPHY",
-    "DRUG"
+    "DRUG",
     "MARIJUANA",
-    "WEAPON",
-    "GAMBLING PARAPHERNALIA",
     "CONTROLLED",
     "ALCOHOL",
     "DWI",
     "DANG DRUG",
     "DXM",
-    "LIQUOR",
-    "LIQ",
 ]
 cyber_keywords = [
     "ONLINE IMPERSONATION",
-    "HARASSMENT",
     "BREACH OF COMPUTER SECURITY",
-    "SOLICITATION",
-    "CONSUMER PROD",
-    "TAMPERING WITH EVIDENCE",
     "GOV RECORD",
     "UNLAWFUL INTERCEPTION",
     "SEXTING/TRANSMIT SEXUAL PHOTOS",
@@ -134,10 +128,6 @@ cyber_keywords = [
     "FALSE",
     "TELECOMMUNICATION",
     "DISCLOSE/PROMO INTIMATE VISUA",
-    "POSSESSION OF FORGED WRITING",
-    "CRIMINAL CONSPIRACY",
-    "MISUSE OF OFFICIAL INFO",
-    "COMMERCIAL BRIBERY",
 ]
 
 
