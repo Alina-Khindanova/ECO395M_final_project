@@ -1,4 +1,4 @@
-# working Title
+# Working Title
 December 7, 2023
 
 Alina Khindanova, Audrey Peres, Lydia Liu, & Marco Rodriguez
