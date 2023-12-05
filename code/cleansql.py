@@ -11,23 +11,7 @@ from google.oauth2 import service_account
 from io import BytesIO
 from io import StringIO
 
-# LOAD CREDENTIALS
-load_dotenv()
-
-json_key_string = os.getenv("JSON_KEY_STRING")
-json_gcp_key = json.loads(json_key_string, strict=False)
-credentials = service_account.Credentials.from_service_account_info(
-    json_gcp_key, scopes=["https://www.googleapis.com/auth/cloud-platform"]
-)
-client = storage.Client(credentials=credentials)
-bucket_name = os.getenv("BUCKET_NAME")
-bucket = client.bucket(bucket_name)
-
-
 # CREATE TABLES
-def run_query(query):
-    engine.connect().exec_driver_sql(query)
-
 
 create_extension = """
     CREATE EXTENSION IF NOT EXISTS postgis
@@ -99,43 +83,67 @@ create_crimereports_table = """
     );
 """
 
-queries_list = [create_extension, create_zipcode_table, create_censustract_table, create_crimereports_table]
+
+def run_query(query):
+    engine.connect().exec_driver_sql(query)
+
+
+queries_list = [
+    create_extension,
+    create_zipcode_table,
+    create_censustract_table,
+    create_crimereports_table,
+]
 
 for query in queries_list:
     run_query(query)
 
+
+# READ CSV FROM BUCKET AND LOAD GEOGRAPHY TABLES
+
+# Credentials
+
+load_dotenv()
+
+json_key_string = os.getenv("JSON_KEY_STRING")
+json_gcp_key = json.loads(json_key_string, strict=False)
+credentials = service_account.Credentials.from_service_account_info(
+    json_gcp_key, scopes=["https://www.googleapis.com/auth/cloud-platform"]
+)
+client = storage.Client(credentials=credentials)
+bucket_name = os.getenv("BUCKET_NAME")
+bucket = client.bucket(bucket_name)
+
 # https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534
 
-# file_zipcode = "cb_2020_us_zcta520_500k.zip"
-# blob_zipcode = bucket.blob(file_zipcode)
-# content_zipcode = blob_zipcode.download_as_bytes()
-# df_zipcode = gpd.read_file(BytesIO(content_zipcode))
+# Read from GCP
+file_zipcode = "cb_2020_us_zcta520_500k.zip"
+blob_zipcode = bucket.blob(file_zipcode)
+content_zipcode = blob_zipcode.download_as_bytes()
+df_zipcode = gpd.read_file(BytesIO(content_zipcode))
 
-# df_zipcode["id"] = range(1, len(df_zipcode) + 1)
-# df_zipcode = df_zipcode[["id"] + [col for col in df_zipcode.columns if col != "id"]]
-# df_zipcode = df_zipcode.rename(columns={"NAME20": "zip_code"})
+df_zipcode["id"] = range(1, len(df_zipcode) + 1)
+df_zipcode = df_zipcode[["id"] + [col for col in df_zipcode.columns if col != "id"]]
+df_zipcode = df_zipcode.rename(columns={"NAME20": "zip_code"})
 
-# df_zipcode["geometry_wkt"] = df_zipcode["geometry"].apply(lambda geom: geom.wkt)
-# df_zipcode.drop(columns=["geometry"], inplace=True)
+df_zipcode["geometry_wkt"] = df_zipcode["geometry"].apply(lambda geom: geom.wkt)
+df_zipcode.drop(columns=["geometry"], inplace=True)
 
 # https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2020.html#list-tab-1883739534
 
-# file_censustract = "cb_2022_48_tract_500k.zip"
-# blob_censustract = bucket.blob(file_censustract)
-# content_censustract = blob_censustract.download_as_bytes()
-# df_censustract = gpd.read_file(BytesIO(content_censustract))
-# df_censustract["id"] = range(1, len(df_censustract) + 1)
-# df_censustract = df_censustract[
-#     ["id"] + [col for col in df_censustract.columns if col != "id"]
-# ]
+file_censustract = "cb_2022_48_tract_500k.zip"
+blob_censustract = bucket.blob(file_censustract)
+content_censustract = blob_censustract.download_as_bytes()
+df_censustract = gpd.read_file(BytesIO(content_censustract))
+df_censustract["id"] = range(1, len(df_censustract) + 1)
+df_censustract = df_censustract[
+    ["id"] + [col for col in df_censustract.columns if col != "id"]
+]
 
-# df_censustract["geometry_wkt"] = df_censustract["geometry"].apply(lambda geom: geom.wkt)
-# df_censustract.drop(columns=["geometry"], inplace=True)
+df_censustract["geometry_wkt"] = df_censustract["geometry"].apply(lambda geom: geom.wkt)
+df_censustract.drop(columns=["geometry"], inplace=True)
 
-# df_censustract.to_sql("census_tract", engine, if_exists="append", index= False)
+# Load the tables
 
-
-
-
-
-
+df_censustract.to_sql("census_tract", engine, if_exists="append", index=False)
+df_zipcode.to_sql("zipcode", engine, if_exists="append", index=False)
