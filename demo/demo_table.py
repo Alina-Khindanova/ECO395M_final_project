@@ -13,10 +13,10 @@ with engine.connect() as connection:
 
 create_table_sql = text("""
     CREATE TABLE demographics (
-        zipcode_year SERIAL PRIMARY KEY,
+        zip_code_year SERIAL PRIMARY KEY,
         median_household_income FLOAT,
         percent_bachelors_higher FLOAT,
-        zip_code INTEGER
+        zip_code VARCHAR(10)
     )
 """)
 
