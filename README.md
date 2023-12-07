@@ -45,9 +45,74 @@ The U.S. Census Bureau provided geographic data, which was obtained in the form 
 
 1. Data Collection
 
+- Crime Report Data
+
+Crime reports CSV file is from the [City of Austin Open Data Portal](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu) as mentioned before, the original data can be downloaded from the website directly, which contains 2.4 million records from 2003 to 2023. 
+
+- Demographic Data
+
+Using an API key for the U.S. Census Bureau’s American Community Survey. After the data was retrieved, a new variable called “zip_code_year” was created, combining the zip code and year of each data point. Therefore, each data point of median household income and percentage of the population with a bachelor's degree or higher was unique for each year and zip code, tracking changes in a specific area over time. 
+
+- Geographic Data
+
+The data was obtained from the U.S. Census Bureau's Cartographic Boundary Files page. To acquire [census tract data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534), scroll down to the census tract header, choose Texas in the shapefile select box, and download the 'cb_2022_48_tract_500k' zip file. Similarly, for [Zip Code data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2020.html#list-tab-1883739534), scroll down to ZIP Code Tabulation Areas (ZCTAs), and download the 'cb_2020_us_zcta520_500k' shapefile. Store both files in the designated GCP bucket.
+
+
 2. Database Creation
 
+- Crime Reports Table
+
+This is the main table of the database, containing all the crime-related information to be included in the final dashboard. After creating the table, the downloaded file was stored in a GCP bucket without the headers and with the variables in the same order as the SQL table created. Finally, the table was filled manually in the GCP console with the mentioned CSV file.
+
+- Crime Type Table
+
+Within the Crime Report Data, there exist 362 distinct crime types, each denoted by a unique Highest Offensive Description. The Highest Offensive Code serves as the corresponding numerical identifier for these descriptions. Utilizing ChatGPT, we systematically classified the 362 crime types into six primary categories: Violent Crimes, Property Crimes, White-collar Crimes, Drug-Related Crimes, Cybercrimes, and Others. Keyword analysis was used, and ChatGPT parsed keywords from the original categories and allocated them to the six overarching type. Specifically, we identified 31 keywords for Violent Crimes, 12 for Property Crimes, 18 for White-collar Crimes, 7 for Drug-Related Crimes, and 9 for Cybercrimes; any remaining keywords were allocated to the "Others" category. The resultant classifications were recorded in the "crime.type" column, yielding the following summary:
+
+    - Other: 137
+    - Violent Crimes: 112
+    - Property Crimes: 48
+    - White-collar Crimes: 27
+    - Drug-Related Crimes: 26
+    - Cybercrimes: 12
+
+The crime type table contains three columns: Highest.Offensive.Code, serving as the primary key linked to other tables; Highest.Offensive.Description, offering a textual depiction of the corresponding code and crime.type, housing the newly assigned crime categories.
+
+- Demographics Table
+
+Once this demographics csv file was created, it was uploaded to the Google Cloud database called “crime” and stored as a table called “demographics”. Using the unique zip code and year as the table's primary key, we could relate it to the information in the crime_reports table using the respective zip code and year available in that table. We used this information for the scatterplots we created in the Streamlit App.
+
+- Zip Code and Census Tracts Tables
+
+These tables store pertinent geographic boundaries, with the original information contained in the above mentioned zip files. Following the data download, the zip files were uploaded to a GCP bucket. Subsequently, the tables were created and populated by connecting Python to the GCP database and bucket, utilizing the database credentials and the GCP key in JSON format.
+
+
 3. Creating Streamlit App
+
+Utilizing Python, SQL queries were employed to extract pertinent data from the generated database. Subsequently, the acquired data was used to generate descriptive summaries and plots, contributing to the characterization of crime geographic distribution, temporal evolution, and its correlation with specific demographic variables. The information produced is displayed within a Streamlit dashboard. Below is a brief description of the content.
+
+- Descriptive summaries:
+
+The presentation included the average annual number of crime reports throughout the analyzed period, along with the proportional contribution of each crime type to the total.
+
+- Temporal evolution:
+
+A monthly series graph for each type of crime was included to examine the evolution of crime reports throughout the period.
+
+- Interactive map:
+
+An interactive map was incorporated to depict the geographical distribution of crime reports. The map utilizes Zip Code boundaries, enabling the selection of crime type and year to display the distribution for each type within the chosen timeframe.
+
+- Demographics scatterplots:
+
+    - Using the crime_reports and demographics tables, we created two scatterplots. 
+    - The first scatterplot examines the correlation between the number of crimes reported in a certain zip code within a certain year and the median household income for that specific zip code within a specific year. 
+    - The second scatterplot shows the correlation between the number of crimes in a certain zip code within a certain year and the population over 18 with a bachelor's degree or higher.
+
+
+
+
+
+
 
 
 # Results
