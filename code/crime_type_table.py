@@ -164,22 +164,3 @@ df_crime_type_distinct = df_crime_type_distinct[df_crime_type_distinct_order]
 
 
 df_crime_type_distinct.to_sql("crime_type", engine, if_exists="append", index=False)
-
-# crime_counts = df_crime_type_distinct["crime.type"].value_counts()
-
-# # Display the counts
-# print(crime_counts)
-
-# other_crimes = df_crime_type[df_crime_type["crime.type"] == "Other"][
-#     "Highest.Offense.Description"
-# ]
-
-# print(other_crimes)
-# other_crimes_counts = other_crimes.value_counts()
-
-# # Get the top 15 most common "Other" crime types
-# top_15_other_crimes = other_crimes_counts.head(15)
-
-# # Display the top 15 crime types
-# print("Top 15 'Other' Crime Types:")
-# print(top_15_other_crimes)
