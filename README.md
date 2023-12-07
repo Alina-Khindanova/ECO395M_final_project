@@ -38,6 +38,38 @@ The U.S. Census Bureau provided geographic data, which was obtained in the form 
 
 # Running the Code
 
+Step 1: Our code will be executed in a Python environment and required packages can be installed with `pip install -r requirements.txt`
+
+Step 2: Table Creation:
+
+Prior to executing the Python code, download the 
+
+    1. [crime_reports CSV file](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu/data_preview)
+    2. [geographic data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534) (ZIP Code Tabulation Areas (ZCTAs) and Census Tracts) 
+
+(See *Methodology → Data Collection→ Geographic data for more details*)
+upload them to a GCP bucket due to its large size. Ensure that the crime reports file does not contain headers.
+
+Before running the python code, you must give it the right credentials to connect to your database. Copy the file `demo.env` to `.env` and modify it by providing the credentials.
+
+`database.py` in the code folder serves as an engine and connection between google cloud platform and Dbeaver. 
+
+Running the code:
+
+    1. Run `python code/geography_table.py`
+    2. Load headless crime_reports CSV into the crime_reports table with the import option in GCP SQL instance's console.
+    3. Then run the following commands:
+        - `python code/crime_type_table.py`
+        - `python code/date_table.py`
+    These commands will create and export tables directly to DBeaver.
+    4. For the demographic table:
+        - Run `python code/demo.py` to script demographic data from the website. This data will be stored in data/demographic_data.csv.
+        - Run `python code/demo_table.py` to create a SQL table and export the data to DBeaver.
+
+Step3: Dashboard Creation using Streamlit 
+
+To access the interactive dashboard for insights into Austin's crime data from 2011 to 2023, execute the command `streamlit run code/dashboard.py` This will enable you to interactively select and view crime data by changing the "Crime Type" and "Select Year" parameters for different results.
+
 
 
 
@@ -83,7 +115,7 @@ The U.S. Census Bureau provided geographic data, which was obtained in the form 
 
 - Zip Code and Census Tracts Tables
 
-    These tables store pertinent geographic boundaries, with the original information contained in the above mentioned zip files. Following the data download, the zip files were uploaded to a GCP bucket. Subsequently, the tables were created and populated by connecting Python to the GCP database and bucket, utilizing the database credentials and the GCP key in JSON format.
+    The first step in our code is to add an extension to our PostgreSQL database to handle geographic data using POSTGIS. These tables store pertinent geographic boundaries, with the original information contained in the above mentioned zip files. Following the data download, the zip files were uploaded to a GCP bucket. Subsequently, the tables were created and populated by connecting Python to the GCP database and bucket, utilizing the database credentials and the GCP key in JSON format.
 
 
 **3. Creating Streamlit App**
@@ -92,7 +124,7 @@ Utilizing Python, SQL queries were employed to extract pertinent data from the g
 
 - Descriptive summaries:
 
-    The presentation included the average annual number of crime reports throughout the analyzed period, along with the proportional contribution of each crime type to the total.
+    The presentation included the average annual number of crime reports throughout the analyzed period and the proportional contribution of each crime type to the total.
 
 - Temporal evolution:
 
@@ -115,27 +147,49 @@ Combining the data for all 12 years, the average number of crime reports per yea
 
 The plot below shows the dynamics of the crime numbers for different types of crimes for years 2011-2023.This graph confirms the previous results of the dominating role of property crimes, with more than 3,000 incidents every month. Overall, the number of crimes decreased for all types of crimes. We can see a significant decline in the property crimes, as well as violent crimes, and also a more pronounced seasonality component in these two types of crimes. However, it is important to note that property crimes experienced a disruption in their downward trend during the pandemic.
 
-![number_of_crime_reports](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Number%20of%20crime%20reports%20per%20month%20(1).png)
+![number_of_crime_reports](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/Number%20of%20crime%20reports%20per%20month.png)
 
 Another piece of the dashboard, the interactive map, shows how the count of crimes changes across various zip code areas for different types of crime. The common trend for all categories is that most of the crimes are concentrated in the Austin city, and less crimes committed in the nearby areas. This could be connected with the fact that central areas are usually more crowded, and many more people live, work or commute here. The most dangerous areas for most of the categories are located in the northern (zip codes 78753, 78758) and eastern (78704, 78741) parts of Austin.
 
 Below are the screens of the geographic distributions for the most common categories of crime - property crimes and violent crimes. We choose to show years 2011, 2016, and 2022 in order to show the beginning of the considered period, middle, and the end. It's evident from our analysis that the distributions of crimes have remained relatively stable throughout the studied period.
 
-<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202011.png" width="200" height="200"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202016.png" width="200" height="200"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202022.png" width="200" height="200">
+<img src=https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202011.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202016.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202022.png" width="300" height="300">
 
 
-<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202011.png" width="200" height="200"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202016.png" width="200" height="200"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202022.png" width="200" height="200">
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202011.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202016.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202022.png" width="300" height="300">
+
+We expanded our analysis illustrating correlations between demographic characteristics and number of crimes. We can see a negative correlation between crime reports counts and median household income. This suggests that individuals with lower incomes are more frequently involved or detected in these incidents. Additionally, our analysis reveals a negative correlation between the count of crime reports and the percentage of individuals aged 18 years or older holding a bachelor’s degree or higher. It could be the case that more educated people are less likely to be involved in an incident. However, to draw concrete conclusions regarding this correlation, it's crucial to investigate whether the majority of individuals involved in crimes reside in the same zip code areas where the incidents occurred.
+
+![income_crime](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/demographic_scatter_plot/Scatter%20Plot%20of%20Median%20Household%20Income%20vs%20Crime%20Reports%20Count.png) ![educ_crime](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/demographic_scatter_plot/Scatter%20Plot%20of%20Percent%20with%20Bachelor's%20Degree%20or%20Higher%20vs%20Crime%20Reports%20Count.png)
+
 
 # Limitations and Extensions
 
 1. Data
 
+Crime Reports table: 
+
+It is important to keep in mind that the crime reports dataset contains records of incidents that the Austin Police Department responded to and wrote a report. In addition, one incident may have several offenses associated with it, but this dataset only depicts the highest level offense of that incident.
+
+Crime Type table:
+When we used ChatGPT to sort 362 different crime types into six main categories using keywords, there are some limitations because the original crime descriptions in the dataset are too general, making it challenging to neatly fit them into simple categories. The act of categorizing crimes is also debatable, as it depends a lot on specific situations. To improve accuracy, it would be wise to explore a more sophisticated model that can better handle the complexities and context of crime data.
+
+Demographics table:
+The data was only available from 2011-2021, so the amount of periods was limited. Also, the American Community Survey had missing data points for some zip codes in different years, so the results could change if more data points were available. In addition, a portion of the population ages 22-24 who have a bachelor's degree are absent in the data, due to the populations being divided as 18 to 24 years old and 25 and older.
+
+Geographic data: 
+We analyze crime data using Zip code boundaries as the relevant geographic division. This approach was not compared to an analysis using another type of geographic division that could potentially provide further insights into the geographic distribution of crime. A natural extension would be to include more granular geographic data.
+
 
 
 2. Methodology
+
+The primary outcome variable, the number of reported crimes, may exhibit a high correlation with the population count residing in a particular area. Utilizing a relative indicator could potentially mitigate this correlation. However, it's essential to consider the possibility of individuals commuting from their residences to commit crimes, which might distort the accuracy of a relative indicator's representation.
+
+As was discussed in the results section, in order to draw better conclusions regarding the effect of demographic characteristics, we need to check whether the majority of people committed crimes in the zip code area where they are living.
 
 
 
 # Conclusion
 
-
+This project provides a descriptive analysis of the number of crimes happened in the Greater Austin Area in 2011-2022. The interactive dashboard shows any dynamic changes happened in every zip code for every category of crime. We found that the geographical distribution did not change a lot, but the number of crimes dropped. Demographics characteristics could potentially play a big role on the number of crimes, however, additional analysis is needed in order to identify a causal relationship.
