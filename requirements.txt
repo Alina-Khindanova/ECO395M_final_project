@@ -1,5 +1,5 @@
 pandas==2.1.1
-sqlalchemy==1.4.50
+sqlalchemy==1.4.36
 geopandas==0.14.1
 geoalchemy==0.7.2
 google-cloud==0.34.0
