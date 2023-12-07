@@ -8,3 +8,4 @@ Python-IO==0.3
 streamline
 geoalchemy2
 google-cloud-storage
+streamlit
