@@ -47,15 +47,15 @@ The U.S. Census Bureau provided geographic data, which was obtained in the form 
 
 - Crime Report Data
 
-Crime reports CSV file is from the [City of Austin Open Data Portal](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu) as mentioned before, the original data can be downloaded from the website directly, which contains 2.4 million records from 2003 to 2023. 
+    Crime reports CSV file is from the [City of Austin Open Data Portal](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu) as mentioned before, the original data can be downloaded from the website directly, which contains 2.4 million records from 2003 to 2023. 
 
 - Demographic Data
 
-Using an API key for the U.S. Census Bureau’s American Community Survey. After the data was retrieved, a new variable called “zip_code_year” was created, combining the zip code and year of each data point. Therefore, each data point of median household income and percentage of the population with a bachelor's degree or higher was unique for each year and zip code, tracking changes in a specific area over time. 
+    Using an API key for the U.S. Census Bureau’s American Community Survey. After the data was retrieved, a new variable called “zip_code_year” was created, combining the zip code and year of each data point. Therefore, each data point of median household income and percentage of the population with a bachelor's degree or higher was unique for each year and zip code, tracking changes in a specific area over time. 
 
 - Geographic Data
 
-The data was obtained from the U.S. Census Bureau's Cartographic Boundary Files page. To acquire [census tract data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534), scroll down to the census tract header, choose Texas in the shapefile select box, and download the 'cb_2022_48_tract_500k' zip file. Similarly, for [Zip Code data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2020.html#list-tab-1883739534), scroll down to ZIP Code Tabulation Areas (ZCTAs), and download the 'cb_2020_us_zcta520_500k' shapefile. Store both files in the designated GCP bucket.
+    The data was obtained from the U.S. Census Bureau's Cartographic Boundary Files page. To acquire [census tract data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534), scroll down to the census tract header, choose Texas in the shapefile select box, and download the 'cb_2022_48_tract_500k' zip file. Similarly, for [Zip Code data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2020.html#list-tab-1883739534), scroll down to ZIP Code Tabulation Areas (ZCTAs), and download the 'cb_2020_us_zcta520_500k' shapefile. Store both files in the designated GCP bucket.
 
 
 **2. Database Creation**
@@ -109,13 +109,13 @@ Utilizing Python, SQL queries were employed to extract pertinent data from the g
     - The second scatterplot shows the correlation between the number of crimes in a certain zip code within a certain year and the population over 18 with a bachelor's degree or higher.
 
 
-
-
-
-
-
-
 # Results
+
+Combining the data for all 12 years, the average number of crime reports per year is 97,516, and the most common category of crime considered in the analysis was property-related crimes (46.4%). Then comes violent crimes (24.5%), drug-related crimes (9.4%), white-collar crimes (3.2%), and cybercrimes (0.3%).
+
+The plot below shows the dynamics of the crime numbers for different types of crimes for years 2011-2023.This graph confirms the previous results of the dominating role of property crimes, with more than 3,000 incidents every month. Overall, the number of crimes decreased for all types of crimes. We can see a significant decline in the property crimes, as well as violent crimes, and also a more pronounced seasonality component in these two types of crimes. However, it is important to note that property crimes experienced a disruption in their downward trend during the pandemic.
+
+![number_of_crime_reports](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Number%20of%20crime%20reports%20per%20month%20(1).png)
 
 
 # Limitations and Extensions
