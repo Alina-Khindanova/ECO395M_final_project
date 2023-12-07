@@ -11,3 +11,6 @@ google-cloud-storage
 streamlit
 folium
 streamlit-folium==0.17.2
+python-dotenv
+seaborn
+matplotlib
