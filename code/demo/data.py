@@ -13,7 +13,7 @@ ZIP_CODES_EXCLUDED = [78788, 78786, 78769, 78781, 78780, 78785, 78789, 78755, 73
 
 ZIP_CODES = [78660, 78613, 78641, 78745, 78664, 78753, 78758, 78704, 78748, 78744, 78741, 78759, 78610, 78653, 78723, 78749, 78750, 78617, 78757, 78746, 78727, 78737, 78724, 78728, 78754, 78731, 78702, 78705, 78738, 78621, 78703, 78734, 78747, 78739, 78732, 78752, 78735, 78654, 78751, 78726, 78645, 78669, 78733, 78701, 78736, 78721, 78756, 78730, 78652, 78712, 78725, 78722, 78719, 78615, 78742, 78788, 78786, 78769, 78781, 78780, 78785, 78789, 78755, 73301, 73344, 78760, 78762, 78761, 78764, 78763, 78766, 78765, 78768, 78767, 78772, 78774, 78773, 78779, 78778, 78783, 78799, 78691, 78708, 78710, 78709, 78711, 78714, 78713, 78716, 78715, 78718, 78720]
 
-df = pd.read_csv("data/demographic_data/demographic_data.csv")
+df = pd.read_csv("data/demographic_data.csv")
 
 # Add a "Year" column
 df["Year"] = df["Zip_Code_Year"].apply(lambda x: x.split("_")[1])
@@ -31,5 +31,5 @@ for year in years_range:
 for year, missing_zip_codes in missing_zip_codes_by_year.items():
     print(f"Missing ZIP codes in {year}: {missing_zip_codes}")
 
-df.to_csv("data/demographic_data/demographic_data_modified.csv", index=False)
+df.to_csv("data/demographic_data_modified.csv", index=False)
 
