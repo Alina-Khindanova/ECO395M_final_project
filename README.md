@@ -121,12 +121,18 @@ Another piece of the dashboard, the interactive map, shows how the count of crim
 
 Below are the screens of the geographic distributions for the most common categories of crime - property crimes and violent crimes. We choose to show years 2011, 2016, and 2022 in order to show the beginning of the considered period, middle, and the end. It's evident from our analysis that the distributions of crimes have remained relatively stable throughout the studied period.
 
-![property2011](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202011.png | width=50)
-![property2016](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202016.png | width=50)
-![property2022](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202022.png | width=50)
-![violent2011](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202011.png | width=50)
-![violent2016](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202016.png | width=50)
-![violent2022](https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202022.png | width=50)
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202011.png" width="50" height="50">
+
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202016.png" width="50" height="50">
+
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Property%20Crimes%202022.png" width="50" height="50">
+
+
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202011.png" width="50" height="50">
+
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202016.png" width="50" height="50">
+
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/readme/artifacts/Violent%20Crimes%202022.png" width="50" height="50">
 
 # Limitations and Extensions
 
