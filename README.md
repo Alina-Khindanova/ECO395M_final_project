@@ -43,7 +43,6 @@ Step 1: Our code will be executed in a Python environment and required packages 
 Step 2: Table Creation:
 
 Prior to executing the Python code, download the 
-
     1. [crime_reports CSV file](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu/data_preview)
     2. [geographic data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534) (ZIP Code Tabulation Areas (ZCTAs) and Census Tracts) 
 
@@ -55,7 +54,6 @@ Before running the python code, you must give it the right credentials to connec
 `database.py` in the code folder serves as an engine and connection between google cloud platform and Dbeaver. 
 
 Running the code:
-
     1. Run `python code/geography_table.py`
     2. Load headless crime_reports CSV into the crime_reports table with the import option in GCP SQL instance's console.
     3. Then run the following commands:
@@ -153,10 +151,10 @@ Another piece of the dashboard, the interactive map, shows how the count of crim
 
 Below are the screens of the geographic distributions for the most common categories of crime - property crimes and violent crimes. We choose to show years 2011, 2016, and 2022 in order to show the beginning of the considered period, middle, and the end. It's evident from our analysis that the distributions of crimes have remained relatively stable throughout the studied period.
 
-<img src=https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202011.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202016.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202022.png" width="300" height="300">
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202011.png" width="250" height="2500"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202016.png" width="250" height="250"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/property_crimes_per_zipcode/Property%20Crimes%20per%20Zipcode%20in%202022.png" width="250" height="250">
 
 
-<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202011.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202016.png" width="300" height="300"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202022.png" width="300" height="300">
+<img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202011.png" width="250" height="250"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202016.png" width="250" height="250"> <img src="https://raw.githubusercontent.com/Alina-Khindanova/ECO395M_final_project/main/artifacts/violent_crimes_per_zipcode/Violent%20Crimes%20per%20Zipcode%20in%202022.png" width="250" height="250">
 
 We expanded our analysis illustrating correlations between demographic characteristics and number of crimes. We can see a negative correlation between crime reports counts and median household income. This suggests that individuals with lower incomes are more frequently involved or detected in these incidents. Additionally, our analysis reveals a negative correlation between the count of crime reports and the percentage of individuals aged 18 years or older holding a bachelor’s degree or higher. It could be the case that more educated people are less likely to be involved in an incident. However, to draw concrete conclusions regarding this correlation, it's crucial to investigate whether the majority of individuals involved in crimes reside in the same zip code areas where the incidents occurred.
 
