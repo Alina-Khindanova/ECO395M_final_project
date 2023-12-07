@@ -146,4 +146,4 @@ df_censustract.drop(columns=["geometry"], inplace=True)
 # Load the tables
 
 df_censustract.to_sql("census_tract", engine, if_exists="append", index=False)
-df_zipcode.to_sql("zipcode", engine, if_exists="append", index=False)
+df_zipcode.to_sql("zipcode2", engine, if_exists="append", index=False)
