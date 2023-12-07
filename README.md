@@ -43,7 +43,7 @@ The U.S. Census Bureau provided geographic data, which was obtained in the form 
 
 # Methodology
 
-1. Data Collection
+**1. Data Collection**
 
 - Crime Report Data
 
@@ -73,7 +73,7 @@ Within the Crime Report Data, there exist 362 distinct crime types, each denoted
     - Property Crimes: 48
     - White-collar Crimes: 27
     - Drug-Related Crimes: 26
-    - Cybercrimes: 12
+    - Cybercrimes: 12.
 
 The crime type table contains three columns: Highest.Offensive.Code, serving as the primary key linked to other tables; Highest.Offensive.Description, offering a textual depiction of the corresponding code and crime.type, housing the newly assigned crime categories.
 
