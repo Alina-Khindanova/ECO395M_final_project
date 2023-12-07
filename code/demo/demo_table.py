@@ -2,8 +2,8 @@ import pandas as pd
 from database import engine
 from sqlalchemy import text
 
-demo_data = pd.read_csv("data/demographic_data/demographic_data.csv", header=None, skiprows=1)
-demo_data.to_csv("data/demographic_data/demographic_data_no_header.csv", index=False, header=False)
+demo_data = pd.read_csv("data/demographic_data.csv", header=None, skiprows=1)
+demo_data.to_csv("data/demographic_data_no_header.csv", index=False, header=False)
 # print(demo_data.head())
 
 create_extension = text("CREATE EXTENSION IF NOT EXISTS postgis")
