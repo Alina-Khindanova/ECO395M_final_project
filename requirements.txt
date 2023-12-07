@@ -1,1 +1,10 @@
-
+pandas==2.1.1
+sqlalchemy==1.4.50
+geopandas==0.14.1
+geoalchemy==0.7.2
+google-cloud==0.34.0
+google-oauth2-tool==0.0.3
+Python-IO==0.3
+streamline
+geoalchemy2
+google-cloud-storage
