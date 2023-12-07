@@ -42,27 +42,23 @@ Step 1: Our code will be executed in a Python environment and required packages 
 
 Step 2: Table Creation:
 
-Prior to executing the Python code, download the 
-    1. [crime_reports CSV file](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu/data_preview)
-    2. [geographic data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534) (ZIP Code Tabulation Areas (ZCTAs) and Census Tracts) 
-
-(See *Methodology → Data Collection→ Geographic data for more details*)
-upload them to a GCP bucket due to its large size. Ensure that the crime reports file does not contain headers.
+Prior to executing the Python code, download the [crime_reports CSV file](https://data.austintexas.gov/Public-Safety/Crime-Reports/fdj4-gpfu/data_preview) and [geographic data](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.2022.html#list-tab-1883739534) (ZIP Code Tabulation Areas (ZCTAs) and Census Tracts; see *Methodology → Data Collection→ Geographic data for more details*) and upload them to a GCP bucket due to its large size. Ensure that the crime reports file does not contain headers.
 
 Before running the python code, you must give it the right credentials to connect to your database. Copy the file `demo.env` to `.env` and modify it by providing the credentials.
 
 `database.py` in the code folder serves as an engine and connection between google cloud platform and Dbeaver. 
 
 Running the code:
-    1. Run `python code/geography_table.py`
-    2. Load headless crime_reports CSV into the crime_reports table with the import option in GCP SQL instance's console.
-    3. Then run the following commands:
-        - `python code/crime_type_table.py`
-        - `python code/date_table.py`
+
+1. Run `python code/geography_table.py`
+2. Load headless crime_reports CSV into the crime_reports table with the import option in GCP SQL instance's console.
+3. Then run the following commands:
+    - `python code/crime_type_table.py`
+    - `python code/date_table.py`
     These commands will create and export tables directly to DBeaver.
-    4. For the demographic table:
-        - Run `python code/demo.py` to script demographic data from the website. This data will be stored in data/demographic_data.csv.
-        - Run `python code/demo_table.py` to create a SQL table and export the data to DBeaver.
+4. For the demographic table:
+    - Run `python code/demo.py` to script demographic data from the website. This data will be stored in data/demographic_data.csv.
+    - Run `python code/demo_table.py` to create a SQL table and export the data to DBeaver.
 
 Step3: Dashboard Creation using Streamlit 
 
